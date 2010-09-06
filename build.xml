@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="Railo Extension Provider" default="usage">
+
+	<property file="${user.home}/build.properties"/>
+	<property file="${user.name}.properties"/>
+	<fail unless="env.name">The environment must be specified in ${basedir}/${user.name}.properties or ${user.home}/build.properties</fail>
+
+	<property name="project.lib" value="lib"/>
+	<property name="project.src" value="src"/>
+	<property name="project.test" value="test"/>
+	<property name="project.build" value="build"/>
+	<property name="project.dist" value="dist"/>
+
+	<taskdef resource="net/sf/antcontrib/antlib.xml">
+		<classpath>
+			<pathelement location="${project.lib}/ant-contrib-1.0b3.jar"/>
+		</classpath>
+	</taskdef>
+	
+	<typedef resource="com/googlecode/svntask/svntask.xml">
+		<classpath>
+			<pathelement location="${project.lib}/svntask-r32.jar"/>
+			<pathelement location="${project.lib}/svnkit-1.0.7.jar"/>
+		</classpath>
+	</typedef>
+	
+	<target name="usage">
+		<echo message="Instructions for Usage"/>		
+	</target>
+	
+	
+	<target name="init">
+		<propertycopy property="env.appRoot" from="env.${env.name}.appRoot" silent="true"/>
+		<propertycopy property="env.webRoot" from="env.${env.name}.webRoot" silent="true"/>
+		<propertycopy property="env.providerURL" from="env.${env.name}.providerURL" silent="true"/>
+		<propertycopy property="env.providerMode" from="env.${env.name}.providerMode" silent="true"/>
+
+		<tstamp>
+			<format property="timestamp" pattern="yyyy-MM-dd HH:mm:ss"/>
+		</tstamp>
+	</target>
+	
+	<target name="clean" depends="init">
+		<delete dir="${project.build}"/>
+		<mkdir dir="${project.build}"/>
+		<mkdir dir="${project.build}/svn"/>
+		<mkdir dir="${project.build}/extension"/>
+		<mkdir dir="${project.build}/railo/extensions"/>
+	</target>
+
+	<target name="build" depends="clean">
+		<antcall target="build-extension-provider"/>
+		<antcall target="build-static">
+			<param name="extensionId" value="9f97cc8b-d37a-429b-b511-9397278fee05"/>
+			<param name="extensionName" value="transfer"/>
+			<param name="extensionVersion" value="1.1"/>
+		</antcall>
+		<antcall target="build-latest">
+			<param name="extensionId" value="4c38979b-99ed-4d95-89f4-68d12a8bf70b"/>
+			<param name="extensionName" value="transfer-latest"/>
+			<param name="extensionRepo" value="http://svn.riaforge.org/transfer/transfer/trunk"/>
+		</antcall>
+	</target>
+	
+	<target name="build-latest">
+		<echo message="Building the latest ${extensionName} extension from ${extensionRepo}"/>
+		<property name="svn.url" value="${extensionRepo}"/>
+		<property name="svn.path" value="${project.build}/svn/${extensionName}"/>
+		<svn>
+			<checkout url="${svn.url}" path="${svn.path}"/>
+			<info path="${svn.path}" committedRevisionProperty="svn.revision"/>
+		</svn>
+		<delete dir="${project.build}/extension/${extensionName}"/>
+		<mkdir dir="${project.build}/extension/${extensionName}"/>
+		<zip destfile="${project.build}/extension/${extensionName}/content.zip" basedir="${svn.path}" excludes="**/.svn"/>
+
+		<antcall target="build-extension">
+			<param name="extensionId" value="${extensionId}"/>
+			<param name="extensionName" value="${extensionName}"/>
+			<param name="extensionVersion" value="r${svn.revision}"/>
+			<param name="extensionTimestamp" value="${timestamp}"/>
+		</antcall>
+	</target>
+	
+	<target name="build-static">
+		<echo message="Building the ${extensionName} extension version ${extensionVersion}"/>
+		<delete dir="${project.build}/extension/${extensionName}"/>
+		<mkdir dir="${project.build}/extension/${extensionName}"/>
+		<copy todir="${project.build}/extension/${extensionName}" file="${project.src}/extensions/${extensionName}/content.zip"/>
+		
+		<antcall target="build-extension">
+			<param name="extensionId" value="${extensionId}"/>
+			<param name="extensionName" value="${extensionName}"/>
+			<param name="extensionVersion" value="${extensionVersion}"/>
+			<param name="extensionTimestamp" value="${timestamp}"/>
+		</antcall>
+	</target>
+
+	<target name="build-extension" depends="init">
+		<copy todir="${project.build}/extension/${extensionName}">
+			<fileset dir="${project.src}/extensions/${extensionName}">
+				<include name="Install*.cfc"/>
+				<include name="config.xml"/>
+			</fileset>
+			<filterset>
+				<filter token="extensionId" value="${extensionId}"/>
+				<filter token="extensionName" value="${extensionName}"/>
+				<filter token="extensionVersion" value="${extensionVersion}"/>
+			</filterset>
+		</copy>
+		<zip destfile="${project.build}/railo/extensions/${extensionName}-${extensionVersion}-railo-extension.zip" basedir="${project.build}/extension/${extensionName}"/>
+
+		<echo message="Adding the ${extensionName} extension to the extension provider application"/>
+		<copy todir="${project.build}/railo/extensions/${extensionName}" file="${project.src}/extensions/${extensionName}/Extension.cfc">
+			<filterset>
+				<filter token="extensionId" value="${extensionId}"/>
+				<filter token="extensionName" value="${extensionName}"/>
+				<filter token="extensionVersion" value="${extensionVersion}"/>		
+				<filter token="extensionTimestamp" value="${extensionTimestamp}"/>		
+			</filterset>
+		</copy>
+	</target>
+
+	<target name="build-extension-provider" depends="init">
+		<echo message="Building the extension provider application"/>
+		<copy todir="${project.build}/railo">
+			<fileset dir="${project.src}" includes="assets/*"/>
+		</copy>
+		<copy todir="${project.build}/railo">
+			<fileset dir="${project.src}" includes="*.cf?"/>
+			<filterset>
+				<filter token="providerURL" value="${env.providerURL}"/>
+				<filter token="providerMode" value="${env.providerMode}"/>
+			</filterset>
+		</copy>
+	</target>
+
+	<target name="deploy" depends="init">
+		<echo message="Deploying extension provider to ${env.webRoot}${env.appRoot}"/>
+		<delete dir="${env.webRoot}${env.appRoot}"/>
+		<mkdir dir="${env.webRoot}${env.appRoot}"/>
+		<copy todir="${env.webRoot}${env.appRoot}">
+			<fileset dir="${project.build}/railo">
+				<include name="**/*"/>
+			</fileset>
+		</copy>
+	</target>
+	
+	<target name="dist" depends="init">
+		<echo message="Creating extension provider distribution"/>
+		<delete dir="${project.dist}"/>
+		<mkdir dir="${project.dist}"/>
+		<copy todir="${project.dist}${env.appRoot}">
+			<fileset dir="${project.build}/railo">
+				<include name="**/*"/>
+			</fileset>
+		</copy>
+	</target>
+	
+</project>
