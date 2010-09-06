@@ -1,0 +1,52 @@
+body {
+	margin: 0;
+	padding: 0;
+	background-color: rgb(95%, 95%, 95%);
+}
+
+div#page {
+	background-color: #FFFFFF;
+	color: #191919;
+	font: 9pt/1.5em "Lucida Grande",Verdana,Arial;
+	margin: 1em;
+	width: 1000px;
+	border: 1px solid #CCCCCC;
+}
+
+div#header {
+	background: url(../images/lamoree-software-logo.png) 6px 6px no-repeat;
+	border-bottom: 2px solid #999999;
+	height: 68px;
+}
+
+div#header h1 {
+	display: none;
+}
+
+div#content {
+	margin: 1em;
+}
+
+div#footer {
+	background-color: #F0F3F6;
+	border-top: 1px solid #666666;
+	font-size: 90%;
+	margin: 20px 0 0;
+	padding: 0.5em;
+}
+
+
+table.extensions {
+	font-size: 100%;
+	margin: 1em;
+}
+
+table.extensions thead td {
+	text-align: left;
+	font-weight: bold;
+	border-bottom: 1px solid #666666;
+}
+
+table.extensions td {
+	padding: 0 1em;
+}

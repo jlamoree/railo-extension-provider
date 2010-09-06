@@ -14,7 +14,7 @@
 
 	<cffunction name="listApplications" returntype="query" access="remote" output="false">
 		<cfset var provider = getInfo()/>
-		<cfset var columns = "type,id,name,label,description,version,category,image,download,author,codename,video,support,documentation,forum,mailinglist,network,created"/>
+		<cfset var columns = createObject("component", "extensions.BaseExtension").COLUMNS/>
 		<cfset var extensions = queryNew(columns)/>
 		<cfset var extension = "null"/>
 		<cfset var paths = "null"/>
