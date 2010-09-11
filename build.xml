@@ -5,7 +5,7 @@
 	<property file="${user.home}/build.properties"/>
 	<property file="${user.name}.properties"/>
 	<fail unless="env.name">The environment must be specified in ${basedir}/${user.name}.properties or ${user.home}/build.properties</fail>
-
+	
 	<property name="project.lib" value="lib"/>
 	<property name="project.src" value="src"/>
 	<property name="project.test" value="test"/>
@@ -25,16 +25,27 @@
 		</classpath>
 	</typedef>
 	
-	<target name="usage">
+	<target name="usage" description="Usage instructions">
 		<echo message="Instructions for Usage"/>		
 	</target>
 	
 	
 	<target name="init">
+		<echo message="Starting build with Ant ${ant.version}"/>
 		<propertycopy property="env.appRoot" from="env.${env.name}.appRoot" silent="true"/>
 		<propertycopy property="env.webRoot" from="env.${env.name}.webRoot" silent="true"/>
 		<propertycopy property="env.providerURL" from="env.${env.name}.providerURL" silent="true"/>
 		<propertycopy property="env.providerMode" from="env.${env.name}.providerMode" silent="true"/>
+
+		<condition property="build.extension.coldspring">
+			<isset property="env.extensions.coldspring"/>
+		</condition>
+		<condition property="build.extension.transfer">
+			<isset property="env.extensions.transfer"/>
+		</condition>
+		<condition property="build.extension.transfer-latest">
+			<isset property="env.extensions.transfer-latest"/>
+		</condition>
 
 		<tstamp>
 			<format property="timestamp" pattern="yyyy-MM-dd HH:mm:ss"/>
@@ -49,21 +60,38 @@
 		<mkdir dir="${project.build}/railo/extensions"/>
 	</target>
 
-	<target name="build" depends="clean">
+	<target name="build" depends="clean" description="Build the project based on the set environment">
 		<antcall target="build-extension-provider"/>
+		<antcall target="build-extension-coldspring"/>
+		<antcall target="build-extension-transfer"/>
+		<antcall target="build-extension-transfer-latest"/>
+	</target>
+
+	<target name="build-extension-coldspring" if="build.extension.coldspring">
+		<antcall target="build-static">
+			<param name="extensionId" value="a26e56d0-bdd8-11df-851a-0800200c9a66"/>
+			<param name="extensionName" value="coldspring"/>
+			<param name="extensionVersion" value="1.2p1"/>
+		</antcall>
+	</target>
+
+	<target name="build-extension-transfer" if="build.extension.transfer">
 		<antcall target="build-static">
 			<param name="extensionId" value="9f97cc8b-d37a-429b-b511-9397278fee05"/>
 			<param name="extensionName" value="transfer"/>
 			<param name="extensionVersion" value="1.1"/>
 		</antcall>
-		<antcall target="build-latest">
+	</target>
+
+	<target name="build-extension-transfer-latest" if="build.extension.transfer-latest">
+		<antcall target="build-subversion">
 			<param name="extensionId" value="4c38979b-99ed-4d95-89f4-68d12a8bf70b"/>
 			<param name="extensionName" value="transfer-latest"/>
 			<param name="extensionRepo" value="http://svn.riaforge.org/transfer/transfer/trunk"/>
 		</antcall>
-	</target>
+	</target>	
 	
-	<target name="build-latest">
+	<target name="build-subversion">
 		<echo message="Building the latest ${extensionName} extension from ${extensionRepo}"/>
 		<property name="svn.url" value="${extensionRepo}"/>
 		<property name="svn.path" value="${project.build}/svn/${extensionName}"/>
@@ -97,7 +125,7 @@
 		</antcall>
 	</target>
 
-	<target name="build-extension" depends="init">
+	<target name="build-extension">
 		<copy todir="${project.build}/extension/${extensionName}">
 			<fileset dir="${project.src}/extensions/${extensionName}">
 				<include name="Install*.cfc"/>
@@ -137,7 +165,7 @@
 		</copy>
 	</target>
 
-	<target name="deploy" depends="init">
+	<target name="deploy" depends="init" description="Deploy a built project">
 		<echo message="Deploying extension provider to ${env.webRoot}${env.appRoot}"/>
 		<delete dir="${env.webRoot}${env.appRoot}"/>
 		<mkdir dir="${env.webRoot}${env.appRoot}"/>
@@ -148,7 +176,7 @@
 		</copy>
 	</target>
 	
-	<target name="dist" depends="init">
+	<target name="dist" depends="init" description="Create a distributable project">
 		<echo message="Creating extension provider distribution"/>
 		<delete dir="${project.dist}"/>
 		<mkdir dir="${project.dist}"/>
