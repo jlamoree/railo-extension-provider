@@ -40,6 +40,9 @@
 		<condition property="build.extension.coldspring">
 			<isset property="env.extensions.coldspring"/>
 		</condition>
+		<condition property="build.extension.cfpayment-latest">
+			<isset property="env.extensions.cfpayment-latest"/>
+		</condition>
 		<condition property="build.extension.transfer">
 			<isset property="env.extensions.transfer"/>
 		</condition>
@@ -63,6 +66,7 @@
 	<target name="build" depends="clean" description="Build the project based on the set environment">
 		<antcall target="build-extension-provider"/>
 		<antcall target="build-extension-coldspring"/>
+		<antcall target="build-extension-cfpayment-latest"/>
 		<antcall target="build-extension-transfer"/>
 		<antcall target="build-extension-transfer-latest"/>
 	</target>
@@ -72,6 +76,14 @@
 			<param name="extensionId" value="a26e56d0-bdd8-11df-851a-0800200c9a66"/>
 			<param name="extensionName" value="coldspring"/>
 			<param name="extensionVersion" value="1.2p1"/>
+		</antcall>
+	</target>
+
+	<target name="build-extension-cfpayment-latest" if="build.extension.cfpayment-latest">
+		<antcall target="build-subversion">
+			<param name="extensionId" value="90b9a4b0-be2f-11df-851a-0800200c9a66"/>
+			<param name="extensionName" value="cfpayment-latest"/>
+			<param name="extensionRepo" value="http://svn.riaforge.org/cfpayment/trunk"/>
 		</antcall>
 	</target>
 
