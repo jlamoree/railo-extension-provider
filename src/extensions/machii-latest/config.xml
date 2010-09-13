@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+	<step label="" description="">
+		<group label="Path" description="The installation path for Mach-II">
+			<item type="text" name="path" label="" dynamic="fillPath"/>
+			<item full-dynamic="fillPathMode"/>
+		</group>
+		<group label="Mapping">
+			<item type="checkbox" name="createMapping">
+				<option value="true" label="create a mapping" selected="true"/>
+			</item>
+			<item type="text" name="mapping" label="" description="" dynamic="fillMapping"/>
+		</group>
+	</step>
+</config>

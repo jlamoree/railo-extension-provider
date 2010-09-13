@@ -37,6 +37,9 @@
 		<propertycopy property="env.providerURL" from="env.${env.name}.providerURL" silent="true"/>
 		<propertycopy property="env.providerMode" from="env.${env.name}.providerMode" silent="true"/>
 
+		<condition property="build.extension.machii-latest">
+			<isset property="env.extensions.machii-latest"/>
+		</condition>
 		<condition property="build.extension.coldspring">
 			<isset property="env.extensions.coldspring"/>
 		</condition>
@@ -65,6 +68,7 @@
 
 	<target name="build" depends="clean" description="Build the project based on the set environment">
 		<antcall target="build-extension-provider"/>
+		<antcall target="build-extension-machii-latest"/>
 		<antcall target="build-extension-coldspring"/>
 		<antcall target="build-extension-cfpayment-latest"/>
 		<antcall target="build-extension-transfer"/>
@@ -79,6 +83,14 @@
 		</antcall>
 	</target>
 
+	<target name="build-extension-machii-latest" if="build.extension.machii-latest">
+		<antcall target="build-subversion">
+			<param name="extensionId" value="a9012220-beeb-11df-851a-0800200c9a66"/>
+			<param name="extensionName" value="machii-latest"/>
+			<param name="extensionRepo" value="http://svn.mach-ii.com/machii/framework/1-8-1/trunk"/>
+		</antcall>
+	</target>
+	
 	<target name="build-extension-cfpayment-latest" if="build.extension.cfpayment-latest">
 		<antcall target="build-subversion">
 			<param name="extensionId" value="90b9a4b0-be2f-11df-851a-0800200c9a66"/>
