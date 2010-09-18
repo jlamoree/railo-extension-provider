@@ -99,10 +99,10 @@
 		</antcall>
 	</target>
 	
-	<target name="build-extension-machii-dashboard-latest" if="build.extension.machii-dashbaord-latest">
+	<target name="build-extension-machii-dashboard-latest" if="build.extension.machii-dashboard-latest">
 		<antcall target="build-subversion">
 			<param name="extensionId" value="502dfc10-c35d-11df-851a-0800200c9a66"/>
-			<param name="extensionName" value="machii-dashbaord-latest"/>
+			<param name="extensionName" value="machii-dashboard-latest"/>
 			<param name="extensionRepo" value="http://svn.mach-ii.com/machii/dashboard/1-1-0/trunk"/>
 		</antcall>
 	</target>
