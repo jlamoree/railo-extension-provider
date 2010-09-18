@@ -42,8 +42,8 @@
 
 		<!--- create mapping --->
 		<cfif data.createMapping eq true>
-			<cfset updateMapping(virtual="/#variables.appName#", physical=data.path)/>
-			<cfset buffer.append("<br>- created mapping [#variables.appName#]")/>
+			<cfset updateMapping(virtual=data.mapping, physical=data.path)/>
+			<cfset buffer.append("<br>- created mapping [#data.mapping#]")/>
 		</cfif>
 		<cfset buffer.append("<br>- copied files to [#data.path#]")/>
 		<cfreturn "<b>#variables.appName# is now successfully installed</b>" & buffer.toString()/>
@@ -137,12 +137,14 @@
 		</cftry>
 
 		<!--- remove mapping --->
-		<cftry>
-			<cfset removeMapping("/#variables.appName#")/>
-			<cfcatch>
-				<cfset arrayAppend(errors, cfcatch)/>
-			</cfcatch>
-		</cftry>
+		<cfif data.createMapping eq true>
+			<cftry>
+				<cfset removeMapping("#data.mapping#")/>
+				<cfcatch>
+					<cfset arrayAppend(errors, cfcatch)/>
+				</cfcatch>
+			</cftry>
+		</cfif>
 
 		<cfset throwErrors(errors)/>
 		<cfreturn "#variables.appName# sucessfully removed"/>
