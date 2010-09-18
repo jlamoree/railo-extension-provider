@@ -93,6 +93,10 @@ div#package-info h4 {
 	border-bottom: 1px solid #666666;
 }
 
+div#package-info a img {
+	border: none;
+}
+
 div#package-info table {
 	float: right;
 }

@@ -50,7 +50,6 @@
 				<td>Name</td>
 				<td>Author</td>
 				<td>Version</td>
-				<td>Build Date</td>
 				<td>Package</td>
 			</tr>
 		</thead>
@@ -65,7 +64,6 @@
 					<td>#extensions.label#</a></td>
 					<td>#extensions.author#</td>
 					<td>#extensions.version#</td>
-					<td>#dateFormat(extensions.created, "yyyy-mm-dd")# #timeFormat(extensions.created, "HH:mm:ss")#</td>
 					<td><a href="#extensions.download#">#extensions.package#</a> (#extensions.size#)</td>
 				</tr>
 			</tbody>
