@@ -4,6 +4,16 @@ body {
 	background-color: rgb(95%, 95%, 95%);
 }
 
+a:link, a:hover, a:visited, a:active {
+	outline: none;
+	border: none;
+	color: #006699;
+}
+
+a:hover, a:active {
+	color: #003366;
+}
+
 div#page {
 	background-color: #FFFFFF;
 	color: #191919;
@@ -25,6 +35,7 @@ div#header h1 {
 
 div#content {
 	margin: 1em;
+	min-height: 500px;
 }
 
 div#footer {
@@ -33,6 +44,7 @@ div#footer {
 	font-size: 90%;
 	margin: 20px 0 0;
 	padding: 0.5em;
+	clear: both;
 }
 
 
@@ -44,9 +56,49 @@ table.extensions {
 table.extensions thead td {
 	text-align: left;
 	font-weight: bold;
-	border-bottom: 1px solid #666666;
+	border-bottom: 1px solid #999999;
 }
 
 table.extensions td {
-	padding: 0 1em;
+	line-height: 2em;
+	padding: 0 0.5em;
+}
+
+table.extensions tbody td {
+	border-bottom: 1px solid #cccccc;	
+}
+
+a.action {
+	display: inline-block;
+	width: 16px;
+	height: 16px;
+	text-indent: -3000px;
+	vertical-align: text-bottom;
+}
+
+a.action img {
+	border: none;
+}
+
+a#info {
+	background-image: url(../images/icons/information.png);
+}
+
+a#site {
+	background-image: url(../images/icons/world-go.png);
+}
+
+
+div#package-info h4 {
+	border-bottom: 1px solid #666666;
+}
+
+div#package-info table {
+	float: right;
+}
+
+div#package-info td.label {
+	font-weight: bold;
+	text-align: right;
+	padding: 0 1em 0 0;
 }

@@ -9,6 +9,16 @@
 	<title>Lamoree Software - Railo Extension Provider</title>
 	<link rel="stylesheet" href="assets/stylesheets/master.css"/>
 	<link rel="shortcut icon" href="assets/images/favicon.ico" type="image/x-icon"/>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"/></script>
+
+	<script>
+		$(document).ready(function() {
+			$("a.action").each(function() {
+				$this = $(this);
+				$this.attr("title", $this[0].text);
+			});
+		});
+	</script>
 </head>
 <body>
 <div id="page">
@@ -35,19 +45,24 @@
 		<table class="extensions" cellspacing="0">
 		<thead>
 			<tr>
+				<td>&nbsp;</td>
 				<td>Category</td>
 				<td>Name</td>
 				<td>Author</td>
 				<td>Version</td>
-				<td>Built</td>
+				<td>Build Date</td>
 				<td>Package</td>
 			</tr>
 		</thead>
 		<cfoutput query="extensions">
 			<tbody>
-				<tr id="#extensions.id#">
+				<tr>
+					<td>
+						<a id="info" class="action" href="info.cfm?id=#extensions.id#">Package Information</a>
+						<a id="site" class="action" href="#extensions.documentation#">Project Homepage</a>
+					</td>
 					<td>#extensions.category#</td>
-					<td><a href="#extensions.documentation#">#extensions.label#</a></td>
+					<td>#extensions.label#</a></td>
 					<td>#extensions.author#</td>
 					<td>#extensions.version#</td>
 					<td>#dateFormat(extensions.created, "yyyy-mm-dd")# #timeFormat(extensions.created, "HH:mm:ss")#</td>
