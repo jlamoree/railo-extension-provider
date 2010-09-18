@@ -37,6 +37,12 @@
 		<propertycopy property="env.providerURL" from="env.${env.name}.providerURL" silent="true"/>
 		<propertycopy property="env.providerMode" from="env.${env.name}.providerMode" silent="true"/>
 
+		<condition property="build.extension.machii">
+			<isset property="env.extensions.machii"/>
+		</condition>
+		<condition property="build.extension.machii-dashboard-latest">
+			<isset property="env.extensions.machii-dashboard-latest"/>
+		</condition>
 		<condition property="build.extension.machii-latest">
 			<isset property="env.extensions.machii-latest"/>
 		</condition>
@@ -68,6 +74,8 @@
 
 	<target name="build" depends="clean" description="Build the project based on the set environment">
 		<antcall target="build-extension-provider"/>
+		<antcall target="build-extension-machii"/>
+		<antcall target="build-extension-machii-dashboard-latest"/>
 		<antcall target="build-extension-machii-latest"/>
 		<antcall target="build-extension-coldspring"/>
 		<antcall target="build-extension-cfpayment-latest"/>
@@ -83,11 +91,27 @@
 		</antcall>
 	</target>
 
+	<target name="build-extension-machii" if="build.extension.machii">
+		<antcall target="build-static">
+			<param name="extensionId" value="50ca7840-c35f-11df-851a-0800200c9a66"/>
+			<param name="extensionName" value="machii"/>
+			<param name="extensionVersion" value="1.8.1"/>
+		</antcall>
+	</target>
+	
+	<target name="build-extension-machii-dashboard-latest" if="build.extension.machii-dashbaord-latest">
+		<antcall target="build-subversion">
+			<param name="extensionId" value="502dfc10-c35d-11df-851a-0800200c9a66"/>
+			<param name="extensionName" value="machii-dashbaord-latest"/>
+			<param name="extensionRepo" value="http://svn.mach-ii.com/machii/dashboard/1-1-0/trunk"/>
+		</antcall>
+	</target>
+	
 	<target name="build-extension-machii-latest" if="build.extension.machii-latest">
 		<antcall target="build-subversion">
-			<param name="extensionId" value="a9012220-beeb-11df-851a-0800200c9a66"/>
+			<param name="extensionId" value="337bb920-c35f-11df-851a-0800200c9a66"/>
 			<param name="extensionName" value="machii-latest"/>
-			<param name="extensionRepo" value="http://svn.mach-ii.com/machii/framework/1-8-1/trunk"/>
+			<param name="extensionRepo" value="http://svn.mach-ii.com/machii/framework/1-9-0/trunk"/>
 		</antcall>
 	</target>
 	
@@ -150,7 +174,12 @@
 	</target>
 
 	<target name="build-extension">
+		<!-- Build package; templates first, then extension replacements, if any -->
 		<copy todir="${project.build}/extension/${extensionName}">
+			<fileset dir="${project.src}/templates">
+				<include name="Install*.cfc"/>
+				<include name="config.xml"/>
+			</fileset>
 			<fileset dir="${project.src}/extensions/${extensionName}">
 				<include name="Install*.cfc"/>
 				<include name="config.xml"/>

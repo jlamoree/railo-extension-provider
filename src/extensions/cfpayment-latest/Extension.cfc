@@ -12,6 +12,7 @@
 		<cfset info.description = "A ColdFusion library for interfacing with several popular payment gateways using a standard API."/>
 		<cfset info.author = "Brian Ghidinelli"/>
 		<cfset info.image = "#arguments.provider.url#assets/images/cfpayment-logo.png"/>
+		<cfset info.homepage = "http://cfpayment.riaforge.org/"/>
 		<cfset info.mailinglist = "http://groups.google.com/group/cfpayment"/>
 		<cfset info.created = parseDateTime("@extensionTimestamp@")/>
 		<cfset info.version = "@extensionVersion@"/>

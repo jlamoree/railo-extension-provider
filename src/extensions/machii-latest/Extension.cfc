@@ -8,10 +8,11 @@
 		<cfset info.id = "@extensionId@"/>
 		<cfset info.name = "@extensionName@"/>
 		<cfset info.type = "web"/>
-		<cfset info.label = "Mach-II 1.8.1"/>
-		<cfset info.description = ""/>
+		<cfset info.label = "Mach-II 1.9.0"/>
+		<cfset info.description = "This is the bleeding edge snapshot taken from the project Subversion repository."/>
 		<cfset info.author = "Mach-II Developers"/>
 		<cfset info.image = "#arguments.provider.url#assets/images/machii-logo.jpg"/>
+		<cfset info.homepage = "http://www.mach-ii.com/"/>
 		<cfset info.support = "http://groups.google.com/group/mach-ii-for-coldfusion"/>
 		<cfset info.mailinglist = "http://groups.google.com/group/mach-ii-for-coldfusion"/>
 		<cfset info.documentation = "http://trac.mach-ii.com/machii/wiki"/>

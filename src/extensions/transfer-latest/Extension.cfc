@@ -12,6 +12,7 @@
 		<cfset info.description = "Transfer ORM's main focus is to automate the repetitive tasks of creating the SQL and custom CFCs that are often required when developing a ColdFusion application. Through a central configuration file Transfer knows how to generate objects, and how to manage them and their relationships back to the database."/>
 		<cfset info.author = "Mark Mandel"/>
 		<cfset info.image = "#arguments.provider.url#assets/images/transfer.jpg"/>
+		<cfset info.homepage = "http://www.transfer-orm.com/"/>
 		<cfset info.documentation = "http://docs.transfer-orm.com/"/>
 		<cfset info.mailinglist = "http://groups.google.com/group/transfer-dev"/>
 		<cfset info.created = parseDateTime("@extensionTimestamp@")/>
