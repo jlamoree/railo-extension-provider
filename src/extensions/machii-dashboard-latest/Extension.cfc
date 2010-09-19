@@ -7,8 +7,8 @@
 
 		<cfset info.id = "@extensionId@"/>
 		<cfset info.name = "@extensionName@"/>
+		<cfset info.label = "@extensionLabel@"/>
 		<cfset info.type = "web"/>
-		<cfset info.label = "Mach-II Dashboard 1.1.0"/>
 		<cfset info.description = "This version of the Mach-II Dashboard should be used with Mach-II Framework 1.8+. Future versions of the framework will have the dashboard built-in."/>
 		<cfset info.author = "Mach-II Developers"/>
 		<cfset info.image = "#arguments.provider.url#assets/images/machii-logo.jpg"/>
@@ -22,6 +22,8 @@
 		<cfset info.package = "#info.name#-#info.version#-railo-extension.zip"/>
 		<cfset info.download = "#arguments.provider.url#extensions/#info.package#"/>
 		<cfset info.size = getFileSize(expandPath("/extensions/#info.package#"))/>
+		<cfset info.md5 = "@extensionMD5@"/>
+		<cfset info.sha1 = "@extensionSHA1@"/>
 		<cfreturn info/>
 	</cffunction>
 </cfcomponent>

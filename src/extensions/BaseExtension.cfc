@@ -1,6 +1,6 @@
 <cfcomponent output="false">
 
-	<cfset this.COLUMNS = "type,id,name,label,description,version,category,image,download,author,codename,video,homepage,support,documentation,forum,mailinglist,network,created,size,package"/>
+	<cfset this.COLUMNS = "type,id,name,label,description,version,category,image,download,author,codename,video,homepage,support,documentation,forum,mailinglist,network,created,size,package,md5,sha1"/>
 
 	<cffunction name="getInfo" returntype="struct" access="private" output="false">
 		<cfset var info = structNew()/>
@@ -26,6 +26,8 @@
 		<cfset info.package = ""/>
 		<cfset info.download = ""/>
 		<cfset info.size = ""/>
+		<cfset info.md5 = ""/>
+		<cfset info.sha1 = ""/>
 		<cfreturn info/>
 	</cffunction>
 

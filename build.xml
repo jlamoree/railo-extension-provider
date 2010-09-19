@@ -74,11 +74,11 @@
 
 	<target name="build" depends="clean" description="Build the project based on the set environment">
 		<antcall target="build-extension-provider"/>
+		<antcall target="build-extension-coldspring"/>
+		<antcall target="build-extension-cfpayment-latest"/>
 		<antcall target="build-extension-machii"/>
 		<antcall target="build-extension-machii-dashboard-latest"/>
 		<antcall target="build-extension-machii-latest"/>
-		<antcall target="build-extension-coldspring"/>
-		<antcall target="build-extension-cfpayment-latest"/>
 		<antcall target="build-extension-transfer"/>
 		<antcall target="build-extension-transfer-latest"/>
 	</target>
@@ -87,7 +87,17 @@
 		<antcall target="build-static">
 			<param name="extensionId" value="a26e56d0-bdd8-11df-851a-0800200c9a66"/>
 			<param name="extensionName" value="coldspring"/>
+			<param name="extensionLabel" value="ColdSpring"/>
 			<param name="extensionVersion" value="1.2p1"/>
+		</antcall>
+	</target>
+	
+	<target name="build-extension-cfpayment-latest" if="build.extension.cfpayment-latest">
+		<antcall target="build-subversion">
+			<param name="extensionId" value="90b9a4b0-be2f-11df-851a-0800200c9a66"/>
+			<param name="extensionName" value="cfpayment-latest"/>
+			<param name="extensionLabel" value="CFPayment"/>
+			<param name="extensionRepo" value="http://svn.riaforge.org/cfpayment/trunk"/>
 		</antcall>
 	</target>
 
@@ -95,6 +105,7 @@
 		<antcall target="build-static">
 			<param name="extensionId" value="50ca7840-c35f-11df-851a-0800200c9a66"/>
 			<param name="extensionName" value="machii"/>
+			<param name="extensionLabel" value="Mach-II 1.8.1"/>
 			<param name="extensionVersion" value="1.8.1"/>
 		</antcall>
 	</target>
@@ -103,6 +114,7 @@
 		<antcall target="build-subversion">
 			<param name="extensionId" value="502dfc10-c35d-11df-851a-0800200c9a66"/>
 			<param name="extensionName" value="machii-dashboard-latest"/>
+			<param name="extensionLabel" value="Mach-II Dashbaord 1.1.0"/>
 			<param name="extensionRepo" value="http://svn.mach-ii.com/machii/dashboard/1-1-0/trunk"/>
 		</antcall>
 	</target>
@@ -111,15 +123,8 @@
 		<antcall target="build-subversion">
 			<param name="extensionId" value="337bb920-c35f-11df-851a-0800200c9a66"/>
 			<param name="extensionName" value="machii-latest"/>
+			<param name="extensionLabel" value="Mach-II 1.9.0"/>
 			<param name="extensionRepo" value="http://svn.mach-ii.com/machii/framework/1-9-0/trunk"/>
-		</antcall>
-	</target>
-	
-	<target name="build-extension-cfpayment-latest" if="build.extension.cfpayment-latest">
-		<antcall target="build-subversion">
-			<param name="extensionId" value="90b9a4b0-be2f-11df-851a-0800200c9a66"/>
-			<param name="extensionName" value="cfpayment-latest"/>
-			<param name="extensionRepo" value="http://svn.riaforge.org/cfpayment/trunk"/>
 		</antcall>
 	</target>
 
@@ -127,6 +132,7 @@
 		<antcall target="build-static">
 			<param name="extensionId" value="9f97cc8b-d37a-429b-b511-9397278fee05"/>
 			<param name="extensionName" value="transfer"/>
+			<param name="extensionLabel" value="Transfer ORM"/>
 			<param name="extensionVersion" value="1.1"/>
 		</antcall>
 	</target>
@@ -135,6 +141,7 @@
 		<antcall target="build-subversion">
 			<param name="extensionId" value="4c38979b-99ed-4d95-89f4-68d12a8bf70b"/>
 			<param name="extensionName" value="transfer-latest"/>
+			<param name="extensionLabel" value="Transfer ORM Latest"/>
 			<param name="extensionRepo" value="http://svn.riaforge.org/transfer/transfer/trunk"/>
 		</antcall>
 	</target>	
@@ -154,6 +161,7 @@
 		<antcall target="build-extension">
 			<param name="extensionId" value="${extensionId}"/>
 			<param name="extensionName" value="${extensionName}"/>
+			<param name="extensionLabel" value="${extensionLabel}"/>
 			<param name="extensionVersion" value="r${svn.revision}"/>
 			<param name="extensionTimestamp" value="${timestamp}"/>
 		</antcall>
@@ -168,6 +176,7 @@
 		<antcall target="build-extension">
 			<param name="extensionId" value="${extensionId}"/>
 			<param name="extensionName" value="${extensionName}"/>
+			<param name="extensionLabel" value="${extensionLabel}"/>
 			<param name="extensionVersion" value="${extensionVersion}"/>
 			<param name="extensionTimestamp" value="${timestamp}"/>
 		</antcall>
@@ -187,18 +196,26 @@
 			<filterset>
 				<filter token="extensionId" value="${extensionId}"/>
 				<filter token="extensionName" value="${extensionName}"/>
+				<filter token="extensionLabel" value="${extensionLabel}"/>
 				<filter token="extensionVersion" value="${extensionVersion}"/>
 			</filterset>
 		</copy>
 		<zip destfile="${project.build}/railo/extensions/${extensionName}-${extensionVersion}-railo-extension.zip" basedir="${project.build}/extension/${extensionName}"/>
+		<checksum file="${project.build}/railo/extensions/${extensionName}-${extensionVersion}-railo-extension.zip" algorithm="MD5" property="extensionMD5"/>
+		<checksum file="${project.build}/railo/extensions/${extensionName}-${extensionVersion}-railo-extension.zip" algorithm="MD5" fileext=".md5"/>
+		<checksum file="${project.build}/railo/extensions/${extensionName}-${extensionVersion}-railo-extension.zip" algorithm="SHA" property="extensionSHA1"/>
+		<checksum file="${project.build}/railo/extensions/${extensionName}-${extensionVersion}-railo-extension.zip" algorithm="SHA" fileext=".sha1"/>
 
 		<echo message="Adding the ${extensionName} extension to the extension provider application"/>
 		<copy todir="${project.build}/railo/extensions/${extensionName}" file="${project.src}/extensions/${extensionName}/Extension.cfc">
 			<filterset>
 				<filter token="extensionId" value="${extensionId}"/>
 				<filter token="extensionName" value="${extensionName}"/>
+				<filter token="extensionLabel" value="${extensionLabel}"/>
 				<filter token="extensionVersion" value="${extensionVersion}"/>		
 				<filter token="extensionTimestamp" value="${extensionTimestamp}"/>		
+				<filter token="extensionMD5" value="${extensionMD5}"/>		
+				<filter token="extensionSHA1" value="${extensionSHA1}"/>		
 			</filterset>
 		</copy>
 	</target>

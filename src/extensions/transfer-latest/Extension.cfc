@@ -7,8 +7,8 @@
 
 		<cfset info.id = "@extensionId@"/>
 		<cfset info.name = "@extensionName@"/>
+		<cfset info.label = "@extensionLabel@"/>
 		<cfset info.type = "web"/>
-		<cfset info.label = "Transfer ORM Latest"/>
 		<cfset info.description = "Transfer ORM's main focus is to automate the repetitive tasks of creating the SQL and custom CFCs that are often required when developing a ColdFusion application. Through a central configuration file Transfer knows how to generate objects, and how to manage them and their relationships back to the database."/>
 		<cfset info.author = "Mark Mandel"/>
 		<cfset info.image = "#arguments.provider.url#assets/images/transfer.jpg"/>
@@ -21,6 +21,8 @@
 		<cfset info.package = "#info.name#-#info.version#-railo-extension.zip"/>
 		<cfset info.download = "#arguments.provider.url#extensions/#info.package#"/>
 		<cfset info.size = getFileSize(expandPath("/extensions/#info.package#"))/>
+		<cfset info.md5 = "@extensionMD5@"/>
+		<cfset info.sha1 = "@extensionSHA1@"/>
 		<cfreturn info/>
 	</cffunction>
 </cfcomponent>
