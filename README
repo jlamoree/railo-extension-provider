@@ -1,0 +1,17 @@
+Railo Extension Provider
+========================
+
+A CFML application that builds and distributes Railo extension packages. Included are installer templates to simplify unzipping the extension files and creating a Railo mapping.
+
+Instructions
+------------
+
+Requirements
+------------
+
+License
+-------
+
+Contact
+-------
+Joseph Lamoree <joseph@lamoree.com>
