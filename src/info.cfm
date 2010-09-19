@@ -36,9 +36,8 @@
 			{name="documentation", label="Documentation:"},
 			{name="forum", label="Forum:"},
 			{name="mailinglist", label="Mailing List:"},
-			{name="package", label="Package File:"},
-			{name="download", label="Package URL:"},
-			{name="size", label="Package Size:"},
+			{name="sha1", label="Hash (SHA1):"},
+			{name="md5", label="Hash (MD5):"}
 		];
 	</cfscript>
 
@@ -82,6 +81,12 @@
 								</tr>
 							</cfif>
 						</cfloop>
+						<tr>
+							<td class="label">Package:</td>
+							<td>
+								<a href="#package.download#">#package.package#</a> (#package.size#)
+							</td>
+						</tr>
 					</tbody>
 					</table>
 
