@@ -101,7 +101,7 @@
 				<p>#result.message#</p>
 			</cfif>
 		</cfoutput>
-
+		<p class="clear"><a href="./">All Available Extensions</a></p>
 	</div>
 	<div id="footer">
 		<cfif server.coldfusion.productname eq "Railo">

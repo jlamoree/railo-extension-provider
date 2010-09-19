@@ -69,7 +69,7 @@
 
 		<h3>Source Code</h3>
 		<p>
-		The source code for this project is at Github: <a href="http://github.com/jlamoree/railo-extension-provider">jlamoree/railo-extension-provider</a>
+		The source code for this project is at GitHub: <a href="http://github.com/jlamoree/railo-extension-provider">jlamoree/railo-extension-provider</a>
 		</p>
 	</div>
 	<div id="footer">

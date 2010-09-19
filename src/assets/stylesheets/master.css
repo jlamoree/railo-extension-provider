@@ -106,3 +106,7 @@ div#package-info td.label {
 	text-align: right;
 	padding: 0 1em 0 0;
 }
+
+.clear {
+	clear: both;
+}
