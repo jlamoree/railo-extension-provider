@@ -18,13 +18,20 @@
 		<cfset var extensions = queryNew(columns)/>
 		<cfset var extension = "null"/>
 		<cfset var paths = "null"/>
+		<cfset var results = "null"/>
 
 		<cfdirectory action="list" directory="#provider.path#extensions/" name="paths" recurse="false" type="dir" listinfo="name"/>
 		<cfloop query="paths">
 			<cfset extension = getExtension("extensions.#paths.name#.Extension")/>
 			<cfset queryAppend(extensions, extension.getInfo(provider))/>
 		</cfloop>
-		<cfreturn extensions/>
+
+		<cfquery name="results" dbtype="query">
+			SELECT *
+			FROM extensions
+			ORDER BY category, label
+		</cfquery>
+		<cfreturn results/>
 	</cffunction>
 
 	<cffunction name="getDownloadDetails" returntype="struct" access="remote" output="false">
