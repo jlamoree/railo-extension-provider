@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config>
 	<step label="" description="">
-		<group label="Path" description="The installation path for @extensionName@ @extensionVersion@">
+		<group label="Path" description="The installation path for @extensionLabel@">
 			<item type="text" name="path" label="" dynamic="fillPath"/>
 			<item full-dynamic="fillPathMode"/>
 		</group>
