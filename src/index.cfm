@@ -39,9 +39,6 @@
 		<pre>@providerURL@ExtensionProvider.cfc</pre>
 
 		<h3>Available Extensions</h3>
-		<p>
-		The following extensions are available:
-		</p>
 		<table class="extensions" cellspacing="0">
 		<thead>
 			<tr>
