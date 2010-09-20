@@ -21,6 +21,7 @@
 			<cfset result.success = true/>
 		<cfelse>
 			<cfset result.abort = true/>
+			<cfset result.message = "Information on the extension package identifier specified could not be found. Most likely this is because it is no longer available. Please see the list of all currently available extensions."/>
 		</cfif>
 	</cfif>
 
